@@ -1,0 +1,6 @@
+id,date,product_id,category,price,quantity
+1,2023-01-01,P100,Électronique,299.99,2
+2,2023-01-01,P200,Vêtements,49.99,3
+3,2023-01-02,P100,Électronique,299.99,1
+4,2023-01-03,P300,Alimentation,9.99,5
+5,2023-01-03,P200,Vêtements,49.99,2

@@ -1,0 +1,73 @@
+services:
+  namenode:
+    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
+    container_name: namenode
+    ports:
+      - "9870:9870"  # Web UI
+      - "8020:8020"  # HDFS
+    volumes:
+      - ./hadoop/namenode:/hadoop/dfs/name
+      - ./config/core-site.xml:/etc/hadoop/core-site.xml
+      - ./config/hdfs-site.xml:/etc/hadoop/hdfs-site.xml
+    environment:
+      - CLUSTER_NAME=hadoop-cluster
+    networks:
+      - hadoop-net
+
+  datanode1:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: datanode1
+    volumes:
+      - ./hadoop/datanode1:/hadoop/dfs/data
+      - ./config/core-site.xml:/etc/hadoop/core-site.xml
+      - ./config/hdfs-site.xml:/etc/hadoop/hdfs-site.xml
+    environment:
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:8020
+    depends_on:
+      - namenode
+    networks:
+      - hadoop-net
+
+  datanode2:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: datanode2
+    volumes:
+      - ./hadoop/datanode2:/hadoop/dfs/data
+      - ./config/core-site.xml:/etc/hadoop/core-site.xml
+      - ./config/hdfs-site.xml:/etc/hadoop/hdfs-site.xml
+    environment:
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:8020
+    depends_on:
+      - namenode
+    networks:
+      - hadoop-net
+
+
+
+  zookeeper:
+    image: zookeeper:3.6
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      - ZOO_MY_ID=1
+      - ZOO_SERVERS=server.1=zookeeper:2888:3888
+    networks:
+      - hadoop-net
+
+
+  postgres:
+    image: postgres:9.6
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=hive
+      - POSTGRES_PASSWORD=hive
+      - POSTGRES_DB=metastore
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    networks:
+      - hadoop-net
+
+networks:
+  hadoop-net:
+    driver: bridge

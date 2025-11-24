@@ -1,0 +1,440 @@
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Install the latest PowerShell for new features and improvements! https://aka.ms/PSWindows
+
+PS C:\Users\TUBA\Desktop\Workspace\Hadoop-java> docker-compose up -d
+[+] Running 5/5
+ ✔ Container namenode   Started                                                                                    0.9s
+ ✔ Container zookeeper  Started                                                                                    0.9s
+ ✔ Container postgres   Started                                                                                    0.9s
+ ✔ Container datanode1  Started                                                                                    0.5s
+ ✔ Container datanode2  Started                                                                                    0.4s
+PS C:\Users\TUBA\Desktop\Workspace\Hadoop-java> docker-compose up -d
+[+] Running 5/5
+ ✔ Container zookeeper  Running                                                                                    0.0s
+ ✔ Container postgres   Running                                                                                    0.0s
+ ✔ Container namenode   Running                                                                                    0.0s
+ ✔ Container datanode2  Running                                                                                    0.0s
+ ✔ Container datanode1  Running                                                                                    0.0s
+PS C:\Users\TUBA\Desktop\Workspace\Hadoop-java> docker exec -it namenode bash     ---se diriger vers root---
+root@70625f0a26b3:/#    ----on entre dans root pour avoir acces aux fichier haadoop---
+  
+root@70625f0a26b3:/# hdfs dfs -mkdir -p /input   ---creer un dossier input ----
+root@70625f0a26b3:/# echo -e "Le chat mange la souris.\nLes chats mangent des souris." > input.txt  
+root@70625f0a26b3:/# echo -e "le\nla\nles\ndes\ndu\nde" > stopwords.txt
+root@70625f0a26b3:/# hdfs dfs -put input.txt stopwords.txt /input/   ---rajouter dans input du texte ----
+2025-10-31 20:08:54,291 INFO sasl.SaslDataTransferClient: SASL encryption trust check: localHostTrusted = false, remoteHostTrusted = false
+2025-10-31 20:08:55,211 INFO sasl.SaslDataTransferClient: SASL encryption trust check: localHostTrusted = false, remoteHostTrusted = false
+root@70625f0a26b3:/# hdfs dfs -ls /input      ---lister mes fichiers ---
+Found 2 items
+-rw-r--r--   2 root supergroup         55 2025-10-31 20:08 /input/input.txt
+-rw-r--r--   2 root supergroup         20 2025-10-31 20:08 /input/stopwords.txt
+root@70625f0a26b3:/# hdfs dfs -mkdir -p /WordCount_Basique
+root@70625f0a26b3:/# exit
+exit
+PS C:\Users\TUBA\Desktop\Workspace\Hadoop-java> javac -cp $(hadoop classpath) WordCountBasic.java
+hadoop : The term 'hadoop' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a
+path was included, verify that the path is correct and try again.
+At line:1 char:13
++ javac -cp $(hadoop classpath) WordCountBasic.java
++             ~~~~~~
+    + CategoryInfo          : ObjectNotFound: (hadoop:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+error: no source files
+PS C:\Users\TUBA\Desktop\Workspace\Hadoop-java> docker exec -it namenode bash
+root@70625f0a26b3:/# javac -cp $(hadoop classpath) WordCountBasic.java
+javac: file not found: WordCountBasic.java
+Usage: javac <options> <source files>
+use -help for a list of possible options
+root@70625f0a26b3:/# hadoop version
+Hadoop 3.2.1
+Source code repository https://gitbox.apache.org/repos/asf/hadoop.git -r b3cbbb467e22ea829b3808f4b7b01d07e0bf3842
+Compiled by rohithsharmaks on 2019-09-10T15:56Z
+Compiled with protoc 2.5.0
+From source with checksum 776eaf9eee9c0ffc370bcbc1888737
+This command was run using /opt/hadoop-3.2.1/share/hadoop/common/hadoop-common-3.2.1.jar
+root@70625f0a26b3:/# cd /tmp
+root@70625f0a26b3:/tmp# javac -cp $(hadoop classpath) WordCountBasic.java
+javac: file not found: WordCountBasic.java
+Usage: javac <options> <source files>
+use -help for a list of possible options
+root@70625f0a26b3:/tmp# exit
+exit
+PS C:\Users\TUBA\Desktop\Workspace\Hadoop-java> docker cp WordCountBasic.java namenode:/tmp/
+CreateFile C:\Users\TUBA\Desktop\Workspace\Hadoop-java\WordCountBasic.java: The system cannot find the file specified.
+PS C:\Users\TUBA\Desktop\Workspace\Hadoop-java> docker exec -it namenode bash
+root@70625f0a26b3:/# exit
+exit
+PS C:\Users\TUBA\Desktop\Workspace\Hadoop-java> cd "C:\Users\TUBA\Desktop\Workspace\Hadoop-java"
+PS C:\Users\TUBA\Desktop\Workspace\Hadoop-java> dir
+
+
+    Directory: C:\Users\TUBA\Desktop\Workspace\Hadoop-java
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----        30/10/2025     12:13                config
+d-----        30/10/2025     12:13                hadoop
+da----        31/10/2025     20:27                postgres-data
+d-----        31/10/2025     21:14                WordCount_Basique
+-a----        08/11/2021     16:49       22738151 diabetes_012_health_indicators_BRFSS2015.csv
+-a----        27/05/2025     19:21           1856 docker-compose.yml
+-a----        22/08/2021     18:15         220188 marketing_campaign1.csv
+-a----        30/10/2025     12:37              0 mon_fichier.txt
+
+
+PS C:\Users\TUBA\Desktop\Workspace\Hadoop-java> notepad WordCountBasic.java
+PS C:\Users\TUBA\Desktop\Workspace\Hadoop-java> dir
+
+
+    Directory: C:\Users\TUBA\Desktop\Workspace\Hadoop-java
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----        30/10/2025     12:13                config
+d-----        30/10/2025     12:13                hadoop
+da----        31/10/2025     20:27                postgres-data
+d-----        31/10/2025     21:14                WordCount_Basique
+-a----        08/11/2021     16:49       22738151 diabetes_012_health_indicators_BRFSS2015.csv
+-a----        27/05/2025     19:21           1856 docker-compose.yml
+-a----        22/08/2021     18:15         220188 marketing_campaign1.csv
+-a----        30/10/2025     12:37              0 mon_fichier.txt
+-a----        31/10/2025     23:00           2258 WordCountBasic.java
+
+
+PS C:\Users\TUBA\Desktop\Workspace\Hadoop-java> docker cp WordCountBasic.java namenode:/tmp/
+Successfully copied 4.1kB to namenode:/tmp/
+PS C:\Users\TUBA\Desktop\Workspace\Hadoop-java> docker exec -it namenode bash
+root@70625f0a26b3:/# cd temp/
+bash: cd: temp/: No such file or directory
+root@70625f0a26b3:/# cd tmp/
+root@70625f0a26b3:/tmp# ls
+WordCountBasic.java       jetty-0.0.0.0-9870-hdfs-_-any-17682165821947066.dir
+hadoop-root-namenode.pid  jetty-0.0.0.0-9870-hdfs-_-any-6133333475257167405.dir
+hsperfdata_root           mon_fichier.txt
+root@70625f0a26b3:/tmp# javac -cp $(hadoop classpath) WordCountBasic.java
+root@70625f0a26b3:/tmp# hdfs dfs -mkdir -p /input/ventes
+root@70625f0a26b3:/tmp# hdfs dfs -put /tmp/sales.csv /input/ventes/
+put: `/tmp/sales.csv': No such file or directory
+root@70625f0a26b3:/tmp# exit
+exit
+PS C:\Users\TUBA\Desktop\Workspace\Hadoop-java> @"
+>> id,date,product_id,category,price,quantity
+>> 1,2023-01-01,P100,Électronique,299.99,2
+>> 2,2023-01-01,P200,Vêtements,49.99,3
+>> 3,2023-01-02,P100,Électronique,299.99,1
+>> 4,2023-01-03,P300,Alimentation,9.99,5
+>> 5,2023-01-03,P200,Vêtements,49.99,2
+>> "@ | Out-File -Encoding utf8 sales.csv
+PS C:\Users\TUBA\Desktop\Workspace\Hadoop-java> cat sales.csv
+id,date,product_id,category,price,quantity
+1,2023-01-01,P100,Électronique,299.99,2
+2,2023-01-01,P200,Vêtements,49.99,3
+3,2023-01-02,P100,Électronique,299.99,1
+4,2023-01-03,P300,Alimentation,9.99,5
+5,2023-01-03,P200,Vêtements,49.99,2
+PS C:\Users\TUBA\Desktop\Workspace\Hadoop-java> docker exec -it namenode bash
+root@70625f0a26b3:/# cd /tmp
+root@70625f0a26b3:/tmp# cat <<EOF > sales.csv
+> id,date,product_id,category,price,quantity
+> 1,2023-01-01,P100,Électronique,299.99,2
+> 2,2023-01-01,P200,Vêtements,49.99,3
+> 3,2023-01-02,P100,Électronique,299.99,1
+> 4,2023-01-03,P300,Alimentation,9.99,5
+> 5,2023-01-03,P200,Vêtements,49.99,2
+> EOF
+root@70625f0a26b3:/tmp# cat sales.csv
+id,date,product_id,category,price,quantity
+1,2023-01-01,P100,Électronique,299.99,2
+2,2023-01-01,P200,Vêtements,49.99,3
+3,2023-01-02,P100,Électronique,299.99,1
+4,2023-01-03,P300,Alimentation,9.99,5
+5,2023-01-03,P200,Vêtements,49.99,2
+root@70625f0a26b3:/tmp# hdfs dfs -ls /input/ventes/
+root@70625f0a26b3:/tmp# hdfs dfs -put /tmp/sales.csv /input/ventes/
+2025-10-31 22:14:07,371 INFO sasl.SaslDataTransferClient: SASL encryption trust check: localHostTrusted = false, remoteHostTrusted = false
+root@70625f0a26b3:/tmp# hdfs dfs -ls /input/ventes/
+Found 1 items
+-rw-r--r--   2 root supergroup        237 2025-10-31 22:14 /input/ventes/sales.csv
+root@70625f0a26b3:/tmp# cd tmp
+bash: cd: tmp: No such file or directory
+root@70625f0a26b3:/tmp# cd /tmp
+root@70625f0a26b3:/tmp# cat << 'EOF' > SalesRevenuePerProduct.java
+> import java.io.IOException;
+> import org.apache.hadoop.conf.Configuration;
+> import org.apache.hadoop.fs.Path;
+> import org.apache.hadoop.io.DoubleWritable;
+> import org.apache.hadoop.io.Text;
+> import org.apache.hadoop.mapreduce.Job;
+> import org.apache.hadoop.mapreduce.Mapper;
+> import org.apache.hadoop.mapreduce.Reducer;
+> import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+> import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+>
+> public class SalesRevenuePerProduct {
+>
+>     public static class RevenueMapper extends Mapper<Object, Text, Text, DoubleWritable> {
+>         public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
+>             String line = value.toString();
+>             if (line.startsWith("id")) return; // ignorer l'en-tête
+>             String[] fields = line.split(",");
+>             if (fields.length == 6) {
+>                 String product = fields[2];
+>                 double price = Double.parseDouble(fields[4]);
+>                 int quantity = Integer.parseInt(fields[5]);
+>                 double revenue = price * quantity;
+>                 context.write(new Text(product), new DoubleWritable(revenue));
+>             }
+>         }
+>     }
+>
+>     public static class RevenueReducer extends Reducer<Text, DoubleWritable, Text, DoubleWritable> {
+>         public void reduce(Text key, Iterable<DoubleWritable> values, Context context) throws IOException, InterruptedException {
+>             double sum = 0;
+>             for (DoubleWritable val : values) {
+>                 sum += val.get();
+>             }
+>             context.write(key, new DoubleWritable(sum));
+>         }
+>     }
+>
+>     public static void main(String[] args) throws Exception {
+>         Configuration conf = new Configuration();
+>         Job job = Job.getInstance(conf, "Sales Revenue Per Product");
+>         job.setJarByClass(SalesRevenuePerProduct.class);
+>         job.setMapperClass(RevenueMapper.class);
+>         job.setReducerClass(RevenueReducer.class);
+>         job.setOutputKeyClass(Text.class);
+>         job.setOutputValueClass(DoubleWritable.class);
+>         FileInputFormat.addInputPath(job, new Path(args[0]));
+>         FileOutputFormat.setOutputPath(job, new Path(args[1]));
+>         System.exit(job.waitForCompletion(true) ? 0 : 1);
+>     }
+> }
+> EOF
+root@70625f0a26b3:/tmp# javac -cp $(hadoop classpath) SalesRevenuePerProduct.java
+SalesRevenuePerProduct.java:17: error: unmappable character for encoding ASCII
+            if (line.startsWith("id")) return; // ignorer l'en-t??te
+                                                                ^
+SalesRevenuePerProduct.java:17: error: unmappable character for encoding ASCII
+            if (line.startsWith("id")) return; // ignorer l'en-t??te
+                                                                 ^
+2 errors
+root@70625f0a26b3:/tmp# sed -i 's/en-t..te/en-tete/' SalesRevenuePerProduct.java
+root@70625f0a26b3:/tmp# javac -cp $(hadoop classpath) SalesRevenuePerProduct.java
+root@70625f0a26b3:/tmp# javac -encoding UTF-8 -cp $(hadoop classpath) SalesRevenuePerProduct.java
+root@70625f0a26b3:/tmp# jar -cvf sales-revenue.jar SalesRevenuePerProduct*.class
+added manifest
+adding: SalesRevenuePerProduct$RevenueMapper.class(in = 1855) (out= 784)(deflated 57%)
+adding: SalesRevenuePerProduct$RevenueReducer.class(in = 1700) (out= 699)(deflated 58%)
+adding: SalesRevenuePerProduct.class(in = 1520) (out= 803)(deflated 47%)
+root@70625f0a26b3:/tmp# jar -cvf sales-revenue.jar SalesRevenuePerProduct*.class
+added manifest
+adding: SalesRevenuePerProduct$RevenueMapper.class(in = 1855) (out= 784)(deflated 57%)
+adding: SalesRevenuePerProduct$RevenueReducer.class(in = 1700) (out= 699)(deflated 58%)
+adding: SalesRevenuePerProduct.class(in = 1520) (out= 803)(deflated 47%)
+root@70625f0a26b3:/tmp# hdfs dfs -cat /output/revenue/part-r-00000
+cat: `/output/revenue/part-r-00000': No such file or directory
+root@70625f0a26b3:/tmp# hadoop jar sales-revenue.jar SalesRevenuePerProduct /input/ventes/sales.csv /output/revenue
+2025-10-31 22:24:07,714 INFO impl.MetricsConfig: Loaded properties from hadoop-metrics2.properties
+2025-10-31 22:24:07,882 INFO impl.MetricsSystemImpl: Scheduled Metric snapshot period at 10 second(s).
+2025-10-31 22:24:07,882 INFO impl.MetricsSystemImpl: JobTracker metrics system started
+2025-10-31 22:24:08,053 WARN mapreduce.JobResourceUploader: Hadoop command-line option parsing not performed. Implement the Tool interface and execute your application with ToolRunner to remedy this.
+2025-10-31 22:24:08,115 INFO input.FileInputFormat: Total input files to process : 1
+2025-10-31 22:24:08,691 INFO mapreduce.JobSubmitter: number of splits:1
+2025-10-31 22:24:08,849 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_local1971948890_0001
+2025-10-31 22:24:08,849 INFO mapreduce.JobSubmitter: Executing with tokens: []
+2025-10-31 22:24:08,964 INFO mapreduce.Job: The url to track the job: http://localhost:8080/
+2025-10-31 22:24:08,966 INFO mapreduce.Job: Running job: job_local1971948890_0001
+2025-10-31 22:24:08,967 INFO mapred.LocalJobRunner: OutputCommitter set in config null
+2025-10-31 22:24:08,979 INFO output.FileOutputCommitter: File Output Committer Algorithm version is 2
+2025-10-31 22:24:08,979 INFO output.FileOutputCommitter: FileOutputCommitter skip cleanup _temporary folders under output directory:false, ignore cleanup failures: false
+2025-10-31 22:24:08,979 INFO mapred.LocalJobRunner: OutputCommitter is org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter
+2025-10-31 22:24:09,054 INFO mapred.LocalJobRunner: Waiting for map tasks
+2025-10-31 22:24:09,055 INFO mapred.LocalJobRunner: Starting task: attempt_local1971948890_0001_m_000000_0
+2025-10-31 22:24:08,043 INFO output.FileOutputCommitter: File Output Committer Algorithm version is 2
+2025-10-31 22:24:08,043 INFO output.FileOutputCommitter: FileOutputCommitter skip cleanup _temporary folders under output directory:false, ignore cleanup failures: false
+2025-10-31 22:24:08,089 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+2025-10-31 22:24:08,096 INFO mapred.MapTask: Processing split: hdfs://namenode:8020/input/ventes/sales.csv:0+237
+2025-10-31 22:24:08,264 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+2025-10-31 22:24:08,264 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+2025-10-31 22:24:08,264 INFO mapred.MapTask: soft limit at 83886080
+2025-10-31 22:24:08,264 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+2025-10-31 22:24:08,264 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+2025-10-31 22:24:08,269 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+2025-10-31 22:24:08,294 INFO sasl.SaslDataTransferClient: SASL encryption trust check: localHostTrusted = false, remoteHostTrusted = false
+2025-10-31 22:24:08,922 INFO mapreduce.Job: Job job_local1971948890_0001 running in uber mode : false
+2025-10-31 22:24:08,923 INFO mapreduce.Job:  map 0% reduce 0%
+2025-10-31 22:24:09,906 INFO mapred.LocalJobRunner:
+2025-10-31 22:24:09,909 INFO mapred.MapTask: Starting flush of map output
+2025-10-31 22:24:09,909 INFO mapred.MapTask: Spilling map output
+2025-10-31 22:24:09,909 INFO mapred.MapTask: bufstart = 0; bufend = 65; bufvoid = 104857600
+2025-10-31 22:24:09,909 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 26214380(104857520); length = 17/6553600
+2025-10-31 22:24:09,919 INFO mapred.MapTask: Finished spill 0
+2025-10-31 22:24:09,934 INFO mapred.Task: Task:attempt_local1971948890_0001_m_000000_0 is done. And is in the process of committing
+2025-10-31 22:24:09,940 INFO mapred.LocalJobRunner: map
+2025-10-31 22:24:09,940 INFO mapred.Task: Task 'attempt_local1971948890_0001_m_000000_0' done.
+2025-10-31 22:24:09,952 INFO mapred.Task: Final Counters for attempt_local1971948890_0001_m_000000_0: Counters: 23
+        File System Counters
+                FILE: Number of bytes read=3309
+                FILE: Number of bytes written=523790
+                FILE: Number of read operations=0
+                FILE: Number of large read operations=0
+                FILE: Number of write operations=0
+                HDFS: Number of bytes read=237
+                HDFS: Number of bytes written=0
+                HDFS: Number of read operations=5
+                HDFS: Number of large read operations=0
+                HDFS: Number of write operations=1
+                HDFS: Number of bytes read erasure-coded=0
+        Map-Reduce Framework
+                Map input records=6
+                Map output records=5
+                Map output bytes=65
+                Map output materialized bytes=81
+                Input split bytes=108
+                Combine input records=0
+                Spilled Records=5
+                Failed Shuffles=0
+                Merged Map outputs=0
+                GC time elapsed (ms)=0
+                Total committed heap usage (bytes)=291504128
+        File Input Format Counters
+                Bytes Read=237
+2025-10-31 22:24:09,953 INFO mapred.LocalJobRunner: Finishing task: attempt_local1971948890_0001_m_000000_0
+2025-10-31 22:24:09,953 INFO mapred.LocalJobRunner: map task executor complete.
+2025-10-31 22:24:09,956 INFO mapred.LocalJobRunner: Waiting for reduce tasks
+2025-10-31 22:24:09,957 INFO mapred.LocalJobRunner: Starting task: attempt_local1971948890_0001_r_000000_0
+2025-10-31 22:24:09,969 INFO output.FileOutputCommitter: File Output Committer Algorithm version is 2
+2025-10-31 22:24:09,969 INFO output.FileOutputCommitter: FileOutputCommitter skip cleanup _temporary folders under output directory:false, ignore cleanup failures: false
+2025-10-31 22:24:09,969 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+2025-10-31 22:24:09,973 INFO mapred.ReduceTask: Using ShuffleConsumerPlugin: org.apache.hadoop.mapreduce.task.reduce.Shuffle@30c73495
+2025-10-31 22:24:09,975 WARN impl.MetricsSystemImpl: JobTracker metrics system already initialized!
+2025-10-31 22:24:10,010 INFO reduce.MergeManagerImpl: MergerManager: memoryLimit=1285606528, maxSingleShuffleLimit=321401632, mergeThreshold=848500352, ioSortFactor=10, memToMemMergeOutputsThreshold=10
+2025-10-31 22:24:10,015 INFO reduce.EventFetcher: attempt_local1971948890_0001_r_000000_0 Thread started: EventFetcher for fetching Map Completion Events
+2025-10-31 22:24:10,049 INFO reduce.LocalFetcher: localfetcher#1 about to shuffle output of map attempt_local1971948890_0001_m_000000_0 decomp: 77 len: 81 to MEMORY
+2025-10-31 22:24:10,055 INFO reduce.InMemoryMapOutput: Read 77 bytes from map-output for attempt_local1971948890_0001_m_000000_0
+2025-10-31 22:24:10,056 INFO reduce.MergeManagerImpl: closeInMemoryFile -> map-output of size: 77, inMemoryMapOutputs.size() -> 1, commitMemory -> 0, usedMemory ->77
+2025-10-31 22:24:10,060 INFO reduce.EventFetcher: EventFetcher is interrupted.. Returning
+2025-10-31 22:24:10,062 INFO mapred.LocalJobRunner: 1 / 1 copied.
+2025-10-31 22:24:10,062 INFO reduce.MergeManagerImpl: finalMerge called with 1 in-memory map-outputs and 0 on-disk map-outputs
+2025-10-31 22:24:10,069 INFO mapred.Merger: Merging 1 sorted segments
+2025-10-31 22:24:10,069 INFO mapred.Merger: Down to the last merge-pass, with 1 segments left of total size: 70 bytes
+2025-10-31 22:24:10,070 INFO reduce.MergeManagerImpl: Merged 1 segments, 77 bytes to disk to satisfy reduce memory limit
+2025-10-31 22:24:10,071 INFO reduce.MergeManagerImpl: Merging 1 files, 81 bytes from disk
+2025-10-31 22:24:10,072 INFO reduce.MergeManagerImpl: Merging 0 segments, 0 bytes from memory into reduce
+2025-10-31 22:24:10,073 INFO mapred.Merger: Merging 1 sorted segments
+2025-10-31 22:24:10,074 INFO mapred.Merger: Down to the last merge-pass, with 1 segments left of total size: 70 bytes
+2025-10-31 22:24:10,075 INFO mapred.LocalJobRunner: 1 / 1 copied.
+2025-10-31 22:24:10,107 INFO Configuration.deprecation: mapred.skip.on is deprecated. Instead, use mapreduce.job.skiprecords
+2025-10-31 22:24:10,145 INFO sasl.SaslDataTransferClient: SASL encryption trust check: localHostTrusted = false, remoteHostTrusted = false
+2025-10-31 22:24:10,350 INFO mapred.Task: Task:attempt_local1971948890_0001_r_000000_0 is done. And is in the process of committing
+2025-10-31 22:24:10,354 INFO mapred.LocalJobRunner: 1 / 1 copied.
+2025-10-31 22:24:10,354 INFO mapred.Task: Task attempt_local1971948890_0001_r_000000_0 is allowed to commit now
+2025-10-31 22:24:10,390 INFO output.FileOutputCommitter: Saved output of task 'attempt_local1971948890_0001_r_000000_0' to hdfs://namenode:8020/output/revenue
+2025-10-31 22:24:10,392 INFO mapred.LocalJobRunner: reduce > reduce
+2025-10-31 22:24:10,392 INFO mapred.Task: Task 'attempt_local1971948890_0001_r_000000_0' done.
+2025-10-31 22:24:10,393 INFO mapred.Task: Final Counters for attempt_local1971948890_0001_r_000000_0: Counters: 30
+        File System Counters
+                FILE: Number of bytes read=3503
+                FILE: Number of bytes written=523871
+                FILE: Number of read operations=0
+                FILE: Number of large read operations=0
+                FILE: Number of write operations=0
+                HDFS: Number of bytes read=237
+                HDFS: Number of bytes written=35
+                HDFS: Number of read operations=10
+                HDFS: Number of large read operations=0
+                HDFS: Number of write operations=3
+                HDFS: Number of bytes read erasure-coded=0
+        Map-Reduce Framework
+                Combine input records=0
+                Combine output records=0
+                Reduce input groups=3
+                Reduce shuffle bytes=81
+                Reduce input records=5
+                Reduce output records=3
+                Spilled Records=5
+                Shuffled Maps =1
+                Failed Shuffles=0
+                Merged Map outputs=1
+                GC time elapsed (ms)=10
+                Total committed heap usage (bytes)=374341632
+        Shuffle Errors
+                BAD_ID=0
+                CONNECTION=0
+                IO_ERROR=0
+                WRONG_LENGTH=0
+                WRONG_MAP=0
+                WRONG_REDUCE=0
+        File Output Format Counters
+                Bytes Written=35
+2025-10-31 22:24:10,393 INFO mapred.LocalJobRunner: Finishing task: attempt_local1971948890_0001_r_000000_0
+2025-10-31 22:24:10,394 INFO mapred.LocalJobRunner: reduce task executor complete.
+2025-10-31 22:24:10,933 INFO mapreduce.Job:  map 100% reduce 100%
+2025-10-31 22:24:10,934 INFO mapreduce.Job: Job job_local1971948890_0001 completed successfully
+2025-10-31 22:24:10,949 INFO mapreduce.Job: Counters: 36
+        File System Counters
+                FILE: Number of bytes read=6812
+                FILE: Number of bytes written=1047661
+                FILE: Number of read operations=0
+                FILE: Number of large read operations=0
+                FILE: Number of write operations=0
+                HDFS: Number of bytes read=474
+                HDFS: Number of bytes written=35
+                HDFS: Number of read operations=15
+                HDFS: Number of large read operations=0
+                HDFS: Number of write operations=4
+                HDFS: Number of bytes read erasure-coded=0
+        Map-Reduce Framework
+                Map input records=6
+                Map output records=5
+                Map output bytes=65
+                Map output materialized bytes=81
+                Input split bytes=108
+                Combine input records=0
+                Combine output records=0
+                Reduce input groups=3
+                Reduce shuffle bytes=81
+                Reduce input records=5
+                Reduce output records=3
+                Spilled Records=10
+                Shuffled Maps =1
+                Failed Shuffles=0
+                Merged Map outputs=1
+                GC time elapsed (ms)=10
+                Total committed heap usage (bytes)=665845760
+        Shuffle Errors
+                BAD_ID=0
+                CONNECTION=0
+                IO_ERROR=0
+                WRONG_LENGTH=0
+                WRONG_MAP=0
+                WRONG_REDUCE=0
+        File Input Format Counters
+                Bytes Read=237
+        File Output Format Counters
+                Bytes Written=35
+root@70625f0a26b3:/tmp# hdfs dfs -cat /output/revenue/part-r-00000
+2025-10-31 22:24:27,600 INFO sasl.SaslDataTransferClient: SASL encryption trust check: localHostTrusted = false, remoteHostTrusted = false
+P100    899.97
+P200    249.95
+P300    49.95
+root@70625f0a26b3:/tmp# # Copier depuis HDFS vers le système de fichiers du conteneur
+root@70625f0a26b3:/tmp# hdfs dfs -get /output/revenue/part-r-00000 /tmp/revenue.csv
+2025-10-31 22:27:50,917 INFO sasl.SaslDataTransferClient: SASL encryption trust check: localHostTrusted = false, remoteHostTrusted = false
+root@70625f0a26b3:/tmp# docker cp namenode:/tmp/revenue.csv "C:\Users\TUBA\Desktop\Workspace\Hadoop-java\revenue.csv"
+bash: docker: command not found
+root@70625f0a26b3:/tmp# hdfs dfs -get /output/revenue/part-r-00000 /tmp/revenue.csv
+get: `/tmp/revenue.csv': File exists
+root@70625f0a26b3:/tmp# docker cp namenode:/tmp/revenue.csv "C:\Users\TUBA\Desktop\Workspace\Hadoop-java\revenue.csv"
+bash: docker: command not found
+root@70625f0a26b3:/tmp# exit
+exit
+PS C:\Users\TUBA\Desktop\Workspace\Hadoop-java> docker cp namenode:/tmp/revenue.csv "C:\Users\TUBA\Desktop\Workspace\Hadoop-java\revenue.csv"
+Successfully copied 2.05kB to C:\Users\TUBA\Desktop\Workspace\Hadoop-java\revenue.csv
+PS C:\Users\TUBA\Desktop\Workspace\Hadoop-java>
