@@ -36,12 +36,30 @@ public class SalesMapReduceTest {
 
     @Test
     public void testHeaderDetection() {
-        // Test header line detection
+        // Test header line detection by checking if first field is numeric
         String header = "transaction_id,product_name,quantity,unit_price,date";
         String dataLine = "1,Laptop,2,999.99,2024-01-15";
         
-        assertTrue(header.startsWith("transaction_id"));
-        assertFalse(dataLine.startsWith("transaction_id"));
+        String[] headerFields = header.split(",");
+        String[] dataFields = dataLine.split(",");
+        
+        // Header's first field should not parse as integer
+        boolean isHeader = false;
+        try {
+            Integer.parseInt(headerFields[0].trim());
+        } catch (NumberFormatException e) {
+            isHeader = true;
+        }
+        assertTrue("Header should be detected (first field is non-numeric)", isHeader);
+        
+        // Data line's first field should parse as integer
+        boolean isData = true;
+        try {
+            Integer.parseInt(dataFields[0].trim());
+        } catch (NumberFormatException e) {
+            isData = false;
+        }
+        assertTrue("Data line should not be detected as header", isData);
     }
 
     @Test

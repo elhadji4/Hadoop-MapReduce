@@ -62,6 +62,8 @@ transaction_id,product_name,quantity,unit_price,date
 2,Mouse,5,29.99,2024-01-15
 ```
 
+**Note**: Les noms de produits ne doivent pas contenir de virgules car le parsing CSV utilise la virgule comme séparateur simple.
+
 ## Compilation
 
 ```bash
@@ -153,7 +155,7 @@ Une fois le conteneur démarré, accédez aux interfaces web:
 - **Apache Hadoop 3.3.6**: Framework de traitement distribué
 - **Maven**: Gestion des dépendances et build
 - **Docker**: Conteneurisation
-- **MRUnit**: Tests unitaires MapReduce
+- **JUnit**: Tests unitaires
 
 ## License
 
