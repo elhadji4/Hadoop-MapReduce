@@ -12,14 +12,11 @@ echo "Local CSV path: $LOCAL_CSV_PATH"
 # Create local output directory if it doesn't exist
 mkdir -p "$(dirname "$LOCAL_CSV_PATH")"
 
-# Create CSV header
-echo "product_name,total_revenue" > "$LOCAL_CSV_PATH"
-
-# Get results from HDFS and convert tab-separated to comma-separated
-hdfs dfs -cat "$HDFS_OUTPUT_DIR/part-r-*" | while read line; do
-    # Convert tab to comma
-    echo "$line" | sed 's/\t/,/g' >> "$LOCAL_CSV_PATH"
-done
+# Create CSV with header and convert tab-separated results to comma-separated
+{
+    echo "product_name,total_revenue"
+    hdfs dfs -cat "$HDFS_OUTPUT_DIR/part-r-*" | sed 's/\t/,/g'
+} > "$LOCAL_CSV_PATH"
 
 # Verify export
 if [ -f "$LOCAL_CSV_PATH" ]; then

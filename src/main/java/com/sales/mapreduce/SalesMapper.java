@@ -25,8 +25,9 @@ public class SalesMapper extends Mapper<LongWritable, Text, Text, DoubleWritable
         
         String line = value.toString();
         
-        // Skip header line
-        if (line.startsWith("product_id") || line.startsWith("Product")) {
+        // Skip header line (case-insensitive check)
+        String lineLower = line.toLowerCase();
+        if (lineLower.startsWith("product_id") || lineLower.startsWith("product")) {
             return;
         }
         
