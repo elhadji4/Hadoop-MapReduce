@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  hadoop:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hadoop-sales-revenue
+    hostname: localhost
+    ports:
+      - "9870:9870"   # HDFS NameNode Web UI
+      - "9864:9864"   # HDFS DataNode Web UI
+      - "8088:8088"   # YARN ResourceManager Web UI
+      - "8042:8042"   # YARN NodeManager Web UI
+      - "9000:9000"   # HDFS
+    volumes:
+      - ./data:/app/data
+      - ./output:/app/output
+    environment:
+      - HADOOP_HOME=/opt/hadoop
+      - JAVA_HOME=/opt/java/openjdk
+    stdin_open: true
+    tty: true
